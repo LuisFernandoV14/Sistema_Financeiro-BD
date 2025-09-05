@@ -3,6 +3,29 @@
 CREATE DATABASE IF NOT EXISTS sistema_financeiro;
 USE sistema_financeiro;
 
+CREATE TABLE agencia (
+	id_Agencia INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome_Agencia VARCHAR(255),
+    endereco_Agencia INT NOT NULL,
+    
+    -- Agencia tem Endereço
+    CONSTRAINT fk_EnderecoAgencia FOREIGN KEY (endereco_Agencia) REFERENCES Endereco (id_Endereco)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE cartao (
+	id_Cartao INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    numero_Cartao VARCHAR(20),
+    validade DATE,
+    CVV VARCHAR(3),
+    tipo_Cartao VARCHAR(20),
+    id_Conta INT,
+    
+    -- Conta emite Cartao
+    CONSTRAINT fk_ContaCartao FOREIGN KEY (id_Conta) REFERENCES Conta (id_Conta)
+	ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
 CREATE TABLE cliente (
 	id_Cliente INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255),
@@ -14,6 +37,18 @@ CREATE TABLE cliente (
     -- Cliente mora em Endereço
     CONSTRAINT fk_EnderecoCliente FOREIGN KEY (endereco) REFERENCES Endereco (id_Endereco)
 	ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE conta (
+	id_Conta INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    numero_Conta VARCHAR(15),
+    saldo DECIMAL(15,2),
+    data_Abertura DATE,
+    id_Cliente INT,
+    
+    -- Cliente possui Conta
+    CONSTRAINT fk_ClienteConta FOREIGN KEY (id_Cliente) REFERENCES Cliente (id_Cliente)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE dependente (
@@ -48,40 +83,8 @@ CREATE TABLE gerente (
     ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TABLE agencia (
-	id_Agencia INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome_Agencia VARCHAR(255),
-    endereco_Agencia INT NOT NULL,
-    
-    -- Agencia tem Endereço
-    CONSTRAINT fk_EnderecoAgencia FOREIGN KEY (endereco_Agencia) REFERENCES Endereco (id_Endereco)
-    ON UPDATE CASCADE ON DELETE CASCADE
-);
 
-CREATE TABLE conta (
-	id_Conta INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    numero_Conta VARCHAR(15),
-    saldo DECIMAL(15,2),
-    data_Abertura DATE,
-    id_Cliente INT,
-    
-    -- Cliente possui Conta
-    CONSTRAINT fk_ClienteConta FOREIGN KEY (id_Cliente) REFERENCES Cliente (id_Cliente)
-    ON UPDATE CASCADE ON DELETE CASCADE
-);
 
-CREATE TABLE cartao (
-	id_Cartao INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    numero_Cartao VARCHAR(20),
-    validade DATE,
-    CVV VARCHAR(3),
-    tipo_Cartao VARCHAR(20),
-    id_Conta INT,
-    
-    -- Conta emite Cartao
-    CONSTRAINT fk_ContaCartao FOREIGN KEY (id_Conta) REFERENCES Conta (id_Conta)
-	ON UPDATE CASCADE ON DELETE RESTRICT
-);
 
 
 
