@@ -3,6 +3,15 @@
 CREATE DATABASE IF NOT EXISTS sistema_financeiro;
 USE sistema_financeiro;
 
+CREATE TABLE endereco (
+	id_Endereco INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	rua VARCHAR(100),
+    numero VARCHAR(10),
+    cidade VARCHAR(50),
+    estado VARCHAR(2),
+    cep VARCHAR(10)
+);
+
 CREATE TABLE cliente (
 	id_Cliente INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255),
@@ -27,13 +36,14 @@ CREATE TABLE dependente (
 	ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE endereco (
-	id_Endereco INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	rua VARCHAR(100),
-    numero VARCHAR(10),
-    cidade VARCHAR(50),
-    estado VARCHAR(2),
-    cep VARCHAR(10)
+CREATE TABLE agencia (
+	id_Agencia INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome_Agencia VARCHAR(255),
+    endereco_Agencia INT UNSIGNED NOT NULL,
+    
+    -- Agencia tem Endereço
+    CONSTRAINT fk_EnderecoAgencia FOREIGN KEY (endereco_Agencia) REFERENCES Endereco (id_Endereco)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE gerente (
@@ -48,14 +58,15 @@ CREATE TABLE gerente (
     ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-
-CREATE TABLE agencia (
-	id_Agencia INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome_Agencia VARCHAR(255),
-    endereco_Agencia INT UNSIGNED NOT NULL,
+CREATE TABLE conta (
+	id_Conta INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    numero_Conta VARCHAR(15),
+    saldo DECIMAL(15,2),
+    data_Abertura DATE,
+    id_Cliente INT UNSIGNED,
     
-    -- Agencia tem Endereço
-    CONSTRAINT fk_EnderecoAgencia FOREIGN KEY (endereco_Agencia) REFERENCES Endereco (id_Endereco)
+    -- Cliente possui Conta
+    CONSTRAINT fk_ClienteConta FOREIGN KEY (id_Cliente) REFERENCES Cliente (id_Cliente)
     ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -70,18 +81,6 @@ CREATE TABLE cartao (
     -- Conta emite Cartao
     CONSTRAINT fk_ContaCartao FOREIGN KEY (id_Conta) REFERENCES Conta (id_Conta)
 	ON UPDATE CASCADE ON DELETE RESTRICT
-);
-
-CREATE TABLE conta (
-	id_Conta INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    numero_Conta VARCHAR(15),
-    saldo DECIMAL(15,2),
-    data_Abertura DATE,
-    id_Cliente INT UNSIGNED,
-    
-    -- Cliente possui Conta
-    CONSTRAINT fk_ClienteConta FOREIGN KEY (id_Cliente) REFERENCES Cliente (id_Cliente)
-    ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Tipos de conta (associação) :
@@ -114,11 +113,3 @@ CREATE TABLE poupança (
     CONSTRAINT fk_idTipoConta_3 FOREIGN KEY (id_Tipo) REFERENCES Conta (id_Conta)
     ON UPDATE CASCADE ON DELETE RESTRICT
 );
-
-
-
-
-
-
-
-
