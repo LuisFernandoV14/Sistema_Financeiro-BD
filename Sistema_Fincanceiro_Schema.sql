@@ -84,6 +84,37 @@ CREATE TABLE gerente (
 );
 
 
+-- Tipos de conta (associação) :
+
+CREATE TABLE corrente (
+	id_Tipo INT PRIMARY KEY,
+	tarifa_mensal DECIMAL(15,2),
+    
+    -- Define o tipo de Conta como Corrente
+    CONSTRAINT fk_idTipoConta_1 FOREIGN KEY (id_Tipo) REFERENCES Conta (id_Conta)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE investimento (
+    id_Tipo INT PRIMARY KEY,
+	tipo_Investimento VARCHAR(255),
+    valor_Aplicado DECIMAL(15,2),
+    
+    -- Define o tipo de Conta como Investimento
+    CONSTRAINT fk_idTipoConta_2 FOREIGN KEY (id_Tipo) REFERENCES Conta (id_Conta)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE poupança (
+	id_Tipo INT PRIMARY KEY,
+    rendimento DECIMAL(15,2),
+    data_Rendimento DATE, 
+    
+    -- Define o tipo de Conta como Poupança
+    CONSTRAINT fk_idTipoConta_3 FOREIGN KEY (id_Tipo) REFERENCES Conta (id_Conta)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
 
 
 
