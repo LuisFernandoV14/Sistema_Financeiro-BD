@@ -1,2 +1,2 @@
-# Arquivos .sql não estavam sendo reconhecidos como .sql por n razões, isso força a reconhecer
 *.sql linguist-language=SQL
+# Arquivos .sql não estavam sendo reconhecidos como .sql por n razões, isso força a reconhecer
