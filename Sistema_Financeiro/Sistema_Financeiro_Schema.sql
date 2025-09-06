@@ -9,15 +9,15 @@ CREATE TABLE endereco (
     numero VARCHAR(10),
     cidade VARCHAR(50),
     estado VARCHAR(2),
-    cep VARCHAR(10)
+    cep VARCHAR(9)
 );
 
 CREATE TABLE cliente (
 	id_Cliente INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255),
-    CPF VARCHAR(11) UNIQUE,
+    CPF VARCHAR(14) UNIQUE,
     data_Nascimento DATE,
-    telefone VARCHAR(20),
+    telefone VARCHAR(11),
     endereco INT UNSIGNED,
     
     -- Cliente mora em Endereço
@@ -26,7 +26,7 @@ CREATE TABLE cliente (
 );
 
 CREATE TABLE dependente (
-    id_Dependente INT UNSIGNED NOT NULL,
+    id_Dependente INT UNSIGNED PRIMARY KEY,
     parentesco VARCHAR(255),
     data_Nascimento DATE,
     nome VARCHAR(255),
@@ -43,14 +43,14 @@ CREATE TABLE agencia (
     
     -- Agencia tem Endereço
     CONSTRAINT fk_EnderecoAgencia FOREIGN KEY (endereco_Agencia) REFERENCES Endereco (id_Endereco)
-    ON UPDATE CASCADE ON DELETE CASCADE
+    ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE gerente (
-	id_Gerente INT UNSIGNED PRIMARY KEY,
+	id_Gerente INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR (255),
-    CPF VARCHAR(11),
-    telefone VARCHAR(20),
+    CPF VARCHAR(14),
+    telefone VARCHAR(11),
     id_Agencia INT UNSIGNED,
     
     -- Gerente atua em agencia
@@ -67,7 +67,7 @@ CREATE TABLE conta (
     
     -- Cliente possui Conta
     CONSTRAINT fk_ClienteConta FOREIGN KEY (id_Cliente) REFERENCES Cliente (id_Cliente)
-    ON UPDATE CASCADE ON DELETE CASCADE
+    ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE cartao (
@@ -106,7 +106,7 @@ CREATE TABLE investimento (
 
 CREATE TABLE poupança (
 	id_Tipo INT UNSIGNED PRIMARY KEY,
-    rendimento DECIMAL(15,2),
+    rendimento DECIMAL(7,2), -- Não sei se é percentual ou valor em dinheiro, se for dinheiro: alterar pra DECIMAL(15,2)
     data_Rendimento DATE, 
     
     -- Define o tipo de Conta como Poupança
